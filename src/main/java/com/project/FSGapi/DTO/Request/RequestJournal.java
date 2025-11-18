@@ -19,10 +19,10 @@ import java.time.LocalDate;
         private String description;
         @NotNull(message = "True or False is required")
         private Boolean isDebit;
-        private AccountName accountName;
-        @Column(precision = 19, scale = 4)
-        @NotNull(message = "Amount is required") @Min(1)
-        private BigDecimal amount;
         @Enumerated(EnumType.STRING)
+        private AccountName accountName;
+        @Column(precision = 10, scale = 2)
+        @NotNull(message = "Amount is required") @Min(1) @Positive(message = "Amount must be positive")
+        private BigDecimal amount;
         private Long accountID;
 }

@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Bean;
 public class Configuration {
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI().info(new Info().title("Financial Statement Generator API").version("1.0")
+        return new OpenAPI().info(new Info().title("Income Statement Generator API").version("1.0.0")
                 .contact(new Contact().name("Orkhan M.")));}
 }

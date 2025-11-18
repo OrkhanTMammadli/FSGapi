@@ -15,6 +15,8 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
+
+    @Column(unique = true)
     private String normalBalance;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

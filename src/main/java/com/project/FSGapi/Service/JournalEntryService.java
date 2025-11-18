@@ -2,7 +2,6 @@ package com.project.FSGapi.Service;
 
 import com.project.FSGapi.DTO.Request.RequestJournal;
 import com.project.FSGapi.DTO.Response.ResponseJournal;
-import com.project.FSGapi.ENUM.AccountType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

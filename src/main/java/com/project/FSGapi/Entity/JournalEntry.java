@@ -20,7 +20,7 @@ public class JournalEntry {
     @Enumerated(EnumType.STRING)
     private AccountName accountName;
     private Boolean isDebit;
-    @Column(precision = 19, scale = 4)
+    @Column(precision = 10, scale = 2)
     private BigDecimal amount;
 
     @ManyToOne

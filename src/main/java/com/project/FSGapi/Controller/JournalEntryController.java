@@ -1,10 +1,10 @@
 package com.project.FSGapi.Controller;
 
 
+import com.project.FSGapi.DTO.IncomeStatementReport;
 import com.project.FSGapi.DTO.Request.RequestJournal;
 import com.project.FSGapi.DTO.Response.ResponseJournal;
 import com.project.FSGapi.Service.Imple.JournalEntryServiceImple;
-import com.project.FSGapi.Service.JournalEntryService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -60,6 +60,12 @@ public class JournalEntryController {
     public ResponseEntity<ResponseJournal> updateJournalEntry (@Valid @RequestBody RequestJournal requestJournal, @PathVariable Long id) {
         ResponseJournal responseJournal = journalEntryServiceImple.updateJournalEntry(id, requestJournal);
         return new ResponseEntity<>(responseJournal, HttpStatus.ACCEPTED);
+    }
+
+    @Operation(summary = "Generate the Income Statement Report")
+    @GetMapping("/report")
+            public ResponseEntity<IncomeStatementReport> getIncomeStatement () {
+        return ResponseEntity.ok(journalEntryServiceImple.generateReport());
     }
 
 }

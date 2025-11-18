@@ -1,8 +1,10 @@
 package com.project.FSGapi.Service.Imple;
 
 
+import com.project.FSGapi.DTO.IncomeStatementReport;
 import com.project.FSGapi.DTO.Request.RequestJournal;
 import com.project.FSGapi.DTO.Response.ResponseJournal;
+import com.project.FSGapi.ENUM.AccountType;
 import com.project.FSGapi.Entity.Account;
 import com.project.FSGapi.Entity.JournalEntry;
 import com.project.FSGapi.Exception.AccountNotFoundE;
@@ -11,20 +13,24 @@ import com.project.FSGapi.Repo.AccountRepository;
 import com.project.FSGapi.Repo.JournalEntryRepository;
 import com.project.FSGapi.Service.JournalEntryService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+
 public class JournalEntryServiceImple implements JournalEntryService {
     private final JournalEntryRepository journalEntryRepository;
     private final AccountRepository accountRepository;
 
-    public JournalEntryServiceImple(JournalEntryRepository journalEntryRepository, AccountRepository accountRepository) {
-        this.journalEntryRepository = journalEntryRepository;
-        this.accountRepository = accountRepository;
-    }
+
 //    _____________________________________________________
 //    _____________________________________________________
 //    Creating Method
@@ -94,9 +100,23 @@ public class JournalEntryServiceImple implements JournalEntryService {
 //  ________________________________________________
 //  ________________________________________________
 //  Get All method
+
     public List<ResponseJournal> getAllJournalEntries() {
         return journalEntryRepository.findAll().stream().map(this::MapToResponseJournal).toList();
     }
+
+    public IncomeStatementReport generateReport () {
+        BigDecimal revenue = journalEntryRepository.sumTotalByAccountType(AccountType.REVENUE);
+        BigDecimal expense = journalEntryRepository.sumTotalByAccountType(AccountType.COGS);
+
+        return IncomeStatementReport.builder()
+                .totalRevenue(revenue)
+                .totalCostOfGoodsSold(expense)
+                .totalGrossProfit(revenue.subtract(expense))
+                .generatedDate(LocalDate.now())
+                .build();
+    }
+
 //  ________________________________________________
 //  ________________________________________________
 //  GetJE by Account ID method
