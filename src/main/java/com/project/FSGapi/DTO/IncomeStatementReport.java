@@ -11,6 +11,11 @@ import java.time.LocalDate;
 public class IncomeStatementReport {
     private BigDecimal totalRevenue;
     private BigDecimal totalCostOfGoodsSold;
-    private BigDecimal totalGrossProfit;
+    private BigDecimal GrossProfit;
+    private BigDecimal totalExpenses;
+    private BigDecimal PBIT;
+    private BigDecimal IncomeTax;
+    private BigDecimal InterestExpense;
+    private BigDecimal NetProfit;
     private LocalDate generatedDate;
 }

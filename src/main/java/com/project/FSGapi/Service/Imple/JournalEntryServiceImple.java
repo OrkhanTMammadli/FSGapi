@@ -12,16 +12,12 @@ import com.project.FSGapi.Exception.JournalEntryNotFoundE;
 import com.project.FSGapi.Repo.AccountRepository;
 import com.project.FSGapi.Repo.JournalEntryRepository;
 import com.project.FSGapi.Service.JournalEntryService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -108,11 +104,23 @@ public class JournalEntryServiceImple implements JournalEntryService {
     public IncomeStatementReport generateReport () {
         BigDecimal revenue = journalEntryRepository.sumTotalByAccountType(AccountType.REVENUE);
         BigDecimal expense = journalEntryRepository.sumTotalByAccountType(AccountType.COGS);
+        BigDecimal grossProfit = revenue.subtract(expense);
+        BigDecimal totalExpenses = journalEntryRepository.sumTotalByAccountType(AccountType.TOTAL_EXPENSES);
+        BigDecimal PBIT = grossProfit.subtract(totalExpenses);
+        BigDecimal IncomeTax = journalEntryRepository.sumTotalByAccountType(AccountType.INCOME_TAX);
+        BigDecimal InterestExpense = journalEntryRepository.sumTotalByAccountType(AccountType.INTEREST_EXPENSE);
+        BigDecimal NetProfit = PBIT.subtract(IncomeTax).subtract(InterestExpense);
+
 
         return IncomeStatementReport.builder()
                 .totalRevenue(revenue)
                 .totalCostOfGoodsSold(expense)
-                .totalGrossProfit(revenue.subtract(expense))
+                .GrossProfit(grossProfit)
+                .totalExpenses(totalExpenses)
+                .PBIT(PBIT)
+                .IncomeTax(IncomeTax)
+                .InterestExpense(InterestExpense)
+                .NetProfit(NetProfit)
                 .generatedDate(LocalDate.now())
                 .build();
     }
