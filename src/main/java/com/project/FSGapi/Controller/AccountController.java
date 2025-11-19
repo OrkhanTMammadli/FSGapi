@@ -7,6 +7,8 @@ import com.project.FSGapi.Service.Imple.AccountServiceImple;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +42,9 @@ public class AccountController {
 
     @Operation(summary = "Show all accounts")
     @GetMapping("/all")
-    public ResponseEntity<List<ResponseAccount>> getAllAccounts() {
-        return new ResponseEntity<>(AccountServiceImple.getAllAccounts(), HttpStatus.OK);
+    public ResponseEntity<Page<ResponseAccount>> getAllAccounts(Pageable pageable) {
+        Page<ResponseAccount> Account = AccountServiceImple.getAllAccounts(pageable);
+        return new ResponseEntity<>(Account, HttpStatus.OK);
     }
 
     @Operation(summary = "Delete the account by ID")

@@ -4,6 +4,8 @@ package com.project.FSGapi.Service;
 import com.project.FSGapi.DTO.Request.RequestAccount;
 import com.project.FSGapi.DTO.Response.ResponseAccount;
 import com.project.FSGapi.Exception.AccountTypeAlreadyExistE;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,5 +16,5 @@ public interface AccountService {
     ResponseAccount updateAccount (Long id, RequestAccount requestAccount);
     ResponseAccount getAccountByID(Long id);
     void  deleteAccount (Long id);
-    List<ResponseAccount> getAllAccounts();
+    Page<ResponseAccount> getAllAccounts(Pageable pageable);
 }

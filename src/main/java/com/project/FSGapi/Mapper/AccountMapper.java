@@ -10,5 +10,5 @@ import org.mapstruct.MappingTarget;
 public interface AccountMapper {
     ResponseAccount toResponseAccount (Account account);
     Account toAccount (RequestAccount requestAccount);
-    //void updateAccountFromRequest (RequestAccount requestAccount, @MappingTarget Account account);
+    void updateAccountFromRequest (RequestAccount requestAccount, @MappingTarget Account account);
 }

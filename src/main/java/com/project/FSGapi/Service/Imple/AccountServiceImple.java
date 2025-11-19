@@ -5,8 +5,11 @@ import com.project.FSGapi.DTO.Response.ResponseAccount;
 import com.project.FSGapi.Entity.Account;
 import com.project.FSGapi.Exception.AccountNotFoundE;
 import com.project.FSGapi.Exception.AccountTypeAlreadyExistE;
+import com.project.FSGapi.Mapper.AccountMapper;
 import com.project.FSGapi.Repo.AccountRepository;
 import com.project.FSGapi.Service.AccountService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +17,12 @@ import java.util.List;
 @Service
 public class AccountServiceImple implements AccountService {
     private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
 
-    public AccountServiceImple(AccountRepository accountRepository)
-    {this.accountRepository = accountRepository;}
+    public AccountServiceImple(AccountRepository accountRepository, AccountMapper accountMapper)
+    {this.accountRepository = accountRepository;
+        this.accountMapper = accountMapper;
+    }
 
 //    _____________________________________________________
 //    _____________________________________________________
@@ -27,23 +33,10 @@ public class AccountServiceImple implements AccountService {
                 .ifPresent(account -> {throw new AccountTypeAlreadyExistE
                         ("AccountType with name " + requestAccount.getAccountType() + " already exists");});
 
-        Account account = MapToRequestAccount(requestAccount);
-        accountRepository.save(account);
-        return MapToResponseAccount(account);
+        Account account = accountMapper.toAccount(requestAccount);
+        Account savedAccount = accountRepository.save(account);
+        return accountMapper.toResponseAccount(savedAccount);
     }
-
-        private Account MapToRequestAccount(RequestAccount requestAccount) {
-        Account account = new Account();
-        account.setAccountType(requestAccount.getAccountType());
-        account.setNormalBalance(requestAccount.getNormalBalance());
-        return account;}
-
-        private ResponseAccount MapToResponseAccount (Account account) {
-        ResponseAccount responseAccount = new ResponseAccount();
-        responseAccount.setId(account.getId());
-        responseAccount.setAccountType(account.getAccountType());
-        responseAccount.setNormalBalance(account.getNormalBalance());
-        return responseAccount;}
 
 //  ________________________________________________________________
 //  ________________________________________________________________
@@ -54,10 +47,11 @@ public class AccountServiceImple implements AccountService {
         accountRepository.findByAccountType(requestAccount.getAccountType())
                 .ifPresent(account -> {throw new AccountTypeAlreadyExistE
                         ("AccountType with name " + requestAccount.getAccountType() + " already exists");});
-        existingAccount.setAccountType(requestAccount.getAccountType());
-        existingAccount.setNormalBalance(requestAccount.getNormalBalance());
+        accountMapper.updateAccountFromRequest(requestAccount, existingAccount);
         Account updatedAccount = accountRepository.save(existingAccount);
-        return MapToResponseAccount(updatedAccount);
+        return accountMapper.toResponseAccount(updatedAccount);
+
+
     }
 
 //  ________________________________________________
@@ -67,7 +61,7 @@ public class AccountServiceImple implements AccountService {
     public ResponseAccount getAccountByID(Long id) {
         Account foundAccount =  accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundE("Account not found"));
-        return MapToResponseAccount(foundAccount);
+        return accountMapper.toResponseAccount(foundAccount);
     }
 
 //  ________________________________________________
@@ -82,8 +76,8 @@ public class AccountServiceImple implements AccountService {
 //  ________________________________________________
 //  Get All method
 
-    public List<ResponseAccount> getAllAccounts() {
-        return accountRepository.findAll().stream().map(this::MapToResponseAccount).toList();
+    public Page<ResponseAccount> getAllAccounts(Pageable pageable) {
+        return accountRepository.findAll(pageable).map(accountMapper::toResponseAccount);
     }
 //  ________________________________________________
 //  ________________________________________________

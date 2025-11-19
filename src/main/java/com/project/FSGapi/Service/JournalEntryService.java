@@ -2,6 +2,8 @@ package com.project.FSGapi.Service;
 
 import com.project.FSGapi.DTO.Request.RequestJournal;
 import com.project.FSGapi.DTO.Response.ResponseJournal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,6 @@ public interface JournalEntryService {
     ResponseJournal updateJournalEntry(Long id, RequestJournal requestJournal);
     ResponseJournal getJournalEntryByID(Long id);
     void deleteJournalEntry(Long id);
-    List<ResponseJournal> getAllJournalEntries();
-    List<ResponseJournal> getJournalEntriesByAccounID(Long accountID);
+    Page<ResponseJournal> getAllJournalEntries(Pageable pageable);
+    Page<ResponseJournal> getJournalEntriesByAccounID(Long accountID, Pageable pageable);
 }
