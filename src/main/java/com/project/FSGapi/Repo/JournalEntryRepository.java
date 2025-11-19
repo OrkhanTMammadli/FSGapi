@@ -9,14 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 public interface JournalEntryRepository extends JpaRepository<JournalEntry, Long> {
-    List<JournalEntry> findByAccountId(Long accountId);
     Optional<JournalEntry> findByTransactionId(Long id);;
     Page<JournalEntry> findByAccountId(Long accountId, Pageable pageable);
-    @Query("SELECT COALESCE(SUM (t.amount), 0) FROM JournalEntry t JOIN t.account a WHERE a.accountType = :type ")
+    @Query("SELECT COALESCE(SUM (je.amount), 0) FROM JournalEntry je JOIN je.account a WHERE a.accountType = :type ")
     BigDecimal sumTotalByAccountType(@Param("type") AccountType accountType);
 
 }

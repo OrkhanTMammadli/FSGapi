@@ -83,8 +83,8 @@ public class JournalEntryServiceImp implements JournalEntryService {
 
     public IncomeStatementReport generateReport () {
         BigDecimal revenue = journalEntryRepository.sumTotalByAccountType(AccountType.REVENUE);
-        BigDecimal expense = journalEntryRepository.sumTotalByAccountType(AccountType.COGS);
-        BigDecimal grossProfit = revenue.subtract(expense);
+        BigDecimal cogs = journalEntryRepository.sumTotalByAccountType(AccountType.COGS);
+        BigDecimal grossProfit = revenue.subtract(cogs);
         BigDecimal totalExpenses = journalEntryRepository.sumTotalByAccountType(AccountType.EXPENSES);
         BigDecimal PBIT = grossProfit.subtract(totalExpenses);
         BigDecimal IncomeTax = journalEntryRepository.sumTotalByAccountType(AccountType.INCOME_TAX);
@@ -94,7 +94,7 @@ public class JournalEntryServiceImp implements JournalEntryService {
 
         return IncomeStatementReport.builder()
                 .totalRevenue(revenue)
-                .totalCostOfGoodsSold(expense)
+                .totalCostOfGoodsSold(cogs)
                 .GrossProfit(grossProfit)
                 .totalExpenses(totalExpenses)
                 .PBIT(PBIT)
