@@ -85,7 +85,7 @@ public class JournalEntryServiceImp implements JournalEntryService {
         BigDecimal revenue = journalEntryRepository.sumTotalByAccountType(AccountType.REVENUE);
         BigDecimal expense = journalEntryRepository.sumTotalByAccountType(AccountType.COGS);
         BigDecimal grossProfit = revenue.subtract(expense);
-        BigDecimal totalExpenses = journalEntryRepository.sumTotalByAccountType(AccountType.TOTAL_EXPENSES);
+        BigDecimal totalExpenses = journalEntryRepository.sumTotalByAccountType(AccountType.EXPENSES);
         BigDecimal PBIT = grossProfit.subtract(totalExpenses);
         BigDecimal IncomeTax = journalEntryRepository.sumTotalByAccountType(AccountType.INCOME_TAX);
         BigDecimal InterestExpense = journalEntryRepository.sumTotalByAccountType(AccountType.INTEREST_EXPENSE);
