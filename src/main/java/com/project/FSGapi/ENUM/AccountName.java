@@ -1,15 +1,6 @@
 package com.project.FSGapi.ENUM;
 
 public enum AccountName {
-//    CASH,
-//    TRADE_PAYABLE,
-//    TRADE_RECEIVABLE,
-//    INVENTORY,
-//    BANK_ACCOUNT,
-//    VAT_DEPOSIT,
-//    SHAREHOLDER_INVESTMENT,
-//    PREPAYMENT,
-//    TAX_LIABILITY,
     REVENUE,
     SALES,
     COS,

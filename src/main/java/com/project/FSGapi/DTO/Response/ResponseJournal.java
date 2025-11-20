@@ -2,7 +2,6 @@ package com.project.FSGapi.DTO.Response;
 
 
 import com.project.FSGapi.ENUM.AccountName;
-import com.project.FSGapi.ENUM.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

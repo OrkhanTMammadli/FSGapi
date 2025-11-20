@@ -1,7 +1,6 @@
 package com.project.FSGapi.DTO.Request;
 
 import com.project.FSGapi.ENUM.AccountName;
-import com.project.FSGapi.ENUM.AccountType;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
