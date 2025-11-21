@@ -17,5 +17,6 @@ public class IncomeStatementReport {
     private BigDecimal IncomeTax;
     private BigDecimal InterestExpense;
     private BigDecimal NetProfit;
+    private BigDecimal GrossProfitMargin;
     private LocalDate generatedDate;
 }

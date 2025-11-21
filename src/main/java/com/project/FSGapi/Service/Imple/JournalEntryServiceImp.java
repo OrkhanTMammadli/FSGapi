@@ -90,9 +90,10 @@ public class JournalEntryServiceImp implements JournalEntryService {
         BigDecimal grossProfit = revenue.subtract(cogs);
         BigDecimal totalExpenses = journalEntryRepository.sumTotalByAccountType(AccountType.EXPENSES);
         BigDecimal PBIT = grossProfit.subtract(totalExpenses);
-        BigDecimal IncomeTax = journalEntryRepository.sumTotalByAccountType(AccountType.INCOME_TAX);
         BigDecimal InterestExpense = journalEntryRepository.sumTotalByAccountType(AccountType.INTEREST_EXPENSE);
+        BigDecimal IncomeTax = PBIT.subtract(InterestExpense).multiply(new BigDecimal(0.20));
         BigDecimal NetProfit = PBIT.subtract(IncomeTax).subtract(InterestExpense);
+        BigDecimal GrossProfitMargin = revenue.subtract(cogs).divide(revenue, 3, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
 
 
         return IncomeStatementReport.builder()
@@ -104,6 +105,7 @@ public class JournalEntryServiceImp implements JournalEntryService {
                 .IncomeTax(IncomeTax)
                 .InterestExpense(InterestExpense)
                 .NetProfit(NetProfit)
+                .GrossProfitMargin(GrossProfitMargin)
                 .generatedDate(LocalDate.now())
                 .build();
     }
