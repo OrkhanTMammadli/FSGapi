@@ -7,8 +7,11 @@ import com.project.FSGapi.Service.Imple.AccountServiceImple;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/accounts")
+@CrossOrigin(origins = "*")
 public class AccountController {
     private final AccountServiceImple AccountServiceImple;
 
@@ -42,7 +46,7 @@ public class AccountController {
 
     @Operation(summary = "Show all accounts")
     @GetMapping("/all")
-    public ResponseEntity<Page<ResponseAccount>> getAllAccounts(Pageable pageable) {
+    public ResponseEntity<Page<ResponseAccount>> getAllAccounts( @ParameterObject @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<ResponseAccount> Account = AccountServiceImple.getAllAccounts(pageable);
         return new ResponseEntity<>(Account, HttpStatus.OK);
     }

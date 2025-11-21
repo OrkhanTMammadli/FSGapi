@@ -8,8 +8,11 @@ import com.project.FSGapi.Service.Imple.JournalEntryServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/journalEntry")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class JournalEntryController {
     private final JournalEntryServiceImp journalEntryServiceImp;
 
@@ -30,14 +34,14 @@ public class JournalEntryController {
 
     @Operation(summary = "Finding the journal entry by Accout type ID")
     @GetMapping("/account/{accountID}")
-    public ResponseEntity<Page<ResponseJournal>> getJournalEntriesByAccounID (@PathVariable Long accountID, Pageable pageable) {
+    public ResponseEntity<Page<ResponseJournal>> getJournalEntriesByAccounID (@PathVariable Long accountID,  @ParameterObject @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<ResponseJournal> Journal = journalEntryServiceImp.getJournalEntriesByAccounID(accountID, pageable);
         return ResponseEntity.ok(Journal);
     }
 
     @Operation(summary = "Finding all the journal entry records")
     @GetMapping("/all")
-    public ResponseEntity<Page<ResponseJournal>> getAllJournalEntries (Pageable pageable) {
+    public ResponseEntity<Page<ResponseJournal>> getAllJournalEntries ( @ParameterObject @PageableDefault(page = 0, size = 10, sort = "transactionId", direction = Sort.Direction.ASC)Pageable pageable) {
         Page<ResponseJournal> Journal = journalEntryServiceImp.getAllJournalEntries(pageable);
         return ResponseEntity.ok(Journal);
     }

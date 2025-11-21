@@ -24,6 +24,10 @@ public class GlobalExp {
     public ResponseEntity<String> handleJournalEntryNotFoundException(JournalEntryNotFoundE ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(AccountTypeAlreadyExistE.class)
+    public ResponseEntity<String> handleAccountTypeAlreadyExistException(AccountTypeAlreadyExistE ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
     }
 
 
